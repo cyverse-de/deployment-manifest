@@ -24,9 +24,11 @@ var (
 // ImageInfo contains the information about each image that needs to be included
 // in the manifest.
 type ImageInfo struct {
-	RepoTag string `json:"repo-tag"`
-	ImageID string `json:"image-id"`
-	GitRef  string `json:"git-ref"`
+	RepoTag            string `json:"repo-tag"`
+	ImageID            string `json:"image-id"`
+	GitRef             string `json:"git-ref"`
+	DescriptiveVersion string `json:"descriptive-version"`
+	Version            string `json:"version"`
 }
 
 // OutputMap is the top-level struct that the JSON output is marshalled from.
@@ -109,10 +111,24 @@ func main() {
 					if _, ok := li.Labels["org.cyverse.git-ref"]; ok {
 						gitref = li.Labels["org.cyverse.git-ref"]
 					}
+					var ver string
+					if _, ok := li.Labels["org.cyverse.version"]; ok {
+						ver = li.Labels["org.cyverse.version"]
+					} else {
+						ver = "unknown"
+					}
+					var descver string
+					if _, ok := li.Labels["org.cyverse.descriptive-version"]; ok {
+						descver = li.Labels["org.cyverse.descriptive-version"]
+					} else {
+						descver = "unknown"
+					}
 					imageInfos = append(imageInfos, ImageInfo{
-						RepoTag: listedRepoTag,
-						ImageID: li.ID,
-						GitRef:  gitref,
+						RepoTag:            listedRepoTag,
+						ImageID:            li.ID,
+						GitRef:             gitref,
+						DescriptiveVersion: descver,
+						Version:            ver,
 					})
 				}
 			}
