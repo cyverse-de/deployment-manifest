@@ -64,7 +64,7 @@ func main() {
 	}
 
 	if *outputPath == "" {
-		log.Fatal("--repo-tags must be set.")
+		log.Fatal("--output must be set.")
 	}
 
 	defaultHeaders := map[string]string{"User-Agent": "engine-api-cli-1.0"}
